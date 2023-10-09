@@ -18,6 +18,19 @@ if ($DNS.Installed -ne $true) {
     Install-WindowsFeature -Name DNS
 }
 
+# Check if DNS Server role is installed
+$dnsRole = Get-WindowsFeature -Name "DNS" | Select-Object -Property "InstallState"
+if ($dnsRole.InstallState -eq "Installed") {
+    # Check if RSAT DNS tools are installed
+    $rsatDns = Get-WindowsFeature -Name "RSAT-DNS-Server" | Select-Object -Property "InstallState"
+    if ($rsatDns.InstallState -ne "Installed") {
+        # Install RSAT DNS tools
+        Install-WindowsFeature -Name RSAT-DNS-Server
+    }
+} else {
+    Write-Host "DNS Server role is not installed."
+}
+
 # Check for available updates
 $UpdateSession = New-Object -ComObject Microsoft.Update.Session
 $UpdateSearcher = $UpdateSession.CreateUpdateSearcher()
