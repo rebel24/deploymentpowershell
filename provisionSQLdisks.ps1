@@ -2,7 +2,7 @@
 # Modify as needed to suit your environment
 
 # Initialize and format data disk
-$DataDisk = Get-Disk | Where-Object { $_.Number -eq 0 }
+$DataDisk = Get-Disk | Where-Object { $_.Number -eq 1 }
 if ($DataDisk -and $DataDisk.PartitionStyle -eq 'RAW') {
     Initialize-Disk -Number $DataDisk.Number -PartitionStyle MBR
     $DataPartition = New-Partition -DiskNumber $DataDisk.Number -UseMaximumSize -AssignDriveLetter -DriveLetter 'F'
@@ -10,7 +10,7 @@ if ($DataDisk -and $DataDisk.PartitionStyle -eq 'RAW') {
 }
 
 # Initialize and format log disk
-$LogDisk = Get-Disk | Where-Object { $_.Number -eq 1 }
+$LogDisk = Get-Disk | Where-Object { $_.Number -eq 2 }
 if ($LogDisk -and $LogDisk.PartitionStyle -eq 'RAW') {
     Initialize-Disk -Number $LogDisk.Number -PartitionStyle MBR
     $LogPartition = New-Partition -DiskNumber $LogDisk.Number -UseMaximumSize -AssignDriveLetter -DriveLetter 'G'
@@ -18,7 +18,7 @@ if ($LogDisk -and $LogDisk.PartitionStyle -eq 'RAW') {
 }
 
 # Initialize and format tempDb disk
-$TempDbDisk = Get-Disk | Where-Object { $_.Number -eq 2 }
+$TempDbDisk = Get-Disk | Where-Object { $_.Number -eq 3 }
 if ($TempDbDisk -and $TempDbDisk.PartitionStyle -eq 'RAW') {
     Initialize-Disk -Number $TempDbDisk.Number -PartitionStyle MBR
     # Specify the drive letter directly in the New-Partition cmdlet
